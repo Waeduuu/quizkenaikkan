@@ -6,7 +6,9 @@
 <title>RK Garage | Senior Mechanic Test</title>
 
 <style>
-*{box-sizing:border-box}
+*{
+    box-sizing:border-box;
+}
 
 body{
     margin:0;
@@ -888,11 +890,12 @@ SUBMIT QUIZ
 <script>
 
 /* =====================================================
-   WEBHOOK BARU
+   DISCORD WEBHOOK
+   MASUKKAN WEBHOOK BARU KAU DI SINI
 ===================================================== */
 
 const WEBHOOK_URL =
-"https://canary.discord.com/api/webhooks/1537805232279650324/GnPIJQABGGBIVPS1dukEoHB2zQOqmXFPeTKPlaN1RDEIUyJedkMNIS5e5KEwRHgcIaSR";
+"PASTE_WEBHOOK_DISCORD_BARU_DI_SINI";
 
 
 /* =====================================================
@@ -901,26 +904,26 @@ const WEBHOOK_URL =
 
 const correctAnswers = {
 
-q1:"B",
-q2:"C",
-q3:"C",
-q4:"B",
-q5:"C",
-q6:"C",
-q7:"C",
-q8:"B",
-q9:"C",
-q10:"B",
-q11:"C",
-q12:"C",
-q13:"C",
-q14:"C",
-q15:"C",
-q16:"B",
-q17:"A",
-q18:"A",
-q19:"B",
-q20:"C"
+    q1:"B",
+    q2:"C",
+    q3:"C",
+    q4:"B",
+    q5:"C",
+    q6:"C",
+    q7:"C",
+    q8:"B",
+    q9:"C",
+    q10:"B",
+    q11:"C",
+    q12:"C",
+    q13:"C",
+    q14:"C",
+    q15:"C",
+    q16:"B",
+    q17:"A",
+    q18:"A",
+    q19:"B",
+    q20:"C"
 
 };
 
@@ -930,36 +933,32 @@ q20:"C"
 ===================================================== */
 
 let timeLeft = 300;
-
 let submitted = false;
-
 
 const timerInterval = setInterval(() => {
 
-if(submitted){
-return;
-}
+    if(submitted){
+        return;
+    }
 
-timeLeft--;
+    timeLeft--;
 
-const minutes =
-Math.floor(timeLeft / 60);
+    const minutes =
+        Math.floor(timeLeft / 60);
 
-const seconds =
-timeLeft % 60;
+    const seconds =
+        timeLeft % 60;
 
+    document.getElementById("timer").textContent =
+        `⏱️ ${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`;
 
-document.getElementById("timer").textContent =
-`⏱️ ${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`;
+    if(timeLeft <= 0){
 
+        clearInterval(timerInterval);
 
-if(timeLeft <= 0){
+        submitQuiz(true);
 
-clearInterval(timerInterval);
-
-submitQuiz(true);
-
-}
+    }
 
 },1000);
 
@@ -972,9 +971,9 @@ document
 .getElementById("quizForm")
 .addEventListener("submit",function(event){
 
-event.preventDefault();
+    event.preventDefault();
 
-submitQuiz(false);
+    submitQuiz(false);
 
 });
 
@@ -985,331 +984,315 @@ submitQuiz(false);
 
 async function submitQuiz(autoSubmit){
 
-if(submitted){
-return;
-}
+    if(submitted){
+        return;
+    }
 
+    const playerName =
+        document
+        .getElementById("playerName")
+        .value
+        .trim();
 
-const playerName =
-document
-.getElementById("playerName")
-.value
-.trim();
+    const currentRank =
+        document
+        .getElementById("currentRank")
+        .value
+        .trim();
 
+    if(!playerName || !currentRank){
 
-const currentRank =
-document
-.getElementById("currentRank")
-.value
-.trim();
+        alert(
+            "SILA ISI NAMA DAN PANGKAT SEKARANG."
+        );
 
+        return;
+    }
 
-if(!playerName || !currentRank){
+    submitted = true;
 
-alert(
-"SILA ISI NAMA DAN PANGKAT SEKARANG."
-);
+    clearInterval(timerInterval);
 
-return;
+    let score = 0;
+    let unanswered = 0;
 
-}
+    const details = [];
 
 
-submitted = true;
+    /* =================================================
+       CHECK SEMUA SOAL
+    ================================================= */
 
-clearInterval(timerInterval);
+    for(let i = 1; i <= 20; i++){
 
+        const questionKey = "q" + i;
 
-let score = 0;
+        const selected =
+            document.querySelector(
+                `input[name="${questionKey}"]:checked`
+            );
 
-let unanswered = 0;
+        const userAnswer =
+            selected
+            ? selected.value
+            : "TIDAK DIJAWAB";
 
-const details = [];
+        const correctAnswer =
+            correctAnswers[questionKey];
 
+        const isCorrect =
+            userAnswer === correctAnswer;
 
-for(let i = 1; i <= 20; i++){
+        if(isCorrect){
+            score++;
+        }
 
-const questionKey =
-"q" + i;
+        if(!selected){
+            unanswered++;
+        }
 
+        details.push({
 
-const selected =
-document.querySelector(
-`input[name="${questionKey}"]:checked`
-);
+            number:i,
 
+            answer:userAnswer,
 
-const userAnswer =
-selected
-? selected.value
-: "TIDAK DIJAWAB";
+            correctAnswer:correctAnswer,
 
+            correct:isCorrect
 
-const correctAnswer =
-correctAnswers[questionKey];
+        });
 
+    }
 
-const isCorrect =
-userAnswer === correctAnswer;
 
+    const percentage =
+        Math.round(
+            (score / 20) * 100
+        );
 
-if(isCorrect){
-score++;
-}
 
+    const status =
+        score >= 16
+        ? "LULUS"
+        : "GAGAL";
 
-if(!selected){
-unanswered++;
-}
 
+    /* =================================================
+       PAPAR RESULT
+    ================================================= */
 
-details.push({
+    const result =
+        document.getElementById("result");
 
-number:i,
+    result.style.display = "block";
 
-answer:userAnswer,
+    result.className =
+        status === "LULUS"
+        ? "pass"
+        : "fail";
 
-correctAnswer:correctAnswer,
 
-correct:isCorrect
+    let resultHTML = `
 
-});
+        <div class="result-title">
 
-}
+            ${
+                status === "LULUS"
+                ? "🎉 LULUS"
+                : "❌ GAGAL"
+            }
 
+        </div>
 
-const percentage =
-Math.round(
-(score / 20) * 100
-);
 
+        <div class="result-item">
+            👤 Nama:
+            <b>${escapeHTML(playerName)}</b>
+        </div>
 
-const status =
-score >= 16
-? "LULUS"
-: "GAGAL";
 
+        <div class="result-item">
+            🎖️ Pangkat Sekarang:
+            <b>${escapeHTML(currentRank)}</b>
+        </div>
 
-/* =================================================
-   RESULT
-================================================= */
 
-const result =
-document.getElementById("result");
+        <div class="result-item">
+            🎯 Pangkat Tujuan:
+            <b>Senior Mekanik</b>
+        </div>
 
 
-result.style.display = "block";
+        <div class="result-item">
+            📊 Markah:
+            <b>${score}/20</b>
+        </div>
 
 
-result.className =
-status === "LULUS"
-? "pass"
-: "fail";
+        <div class="result-item">
+            📈 Score:
+            <b>${percentage}%</b>
+        </div>
 
 
-let resultHTML = `
+        <div class="result-item">
+            ❓ Tidak Dijawab:
+            <b>${unanswered}</b>
+        </div>
 
-<div class="result-title">
+    `;
 
-${
-status === "LULUS"
-? "🎉 LULUS"
-: "❌ GAGAL"
-}
 
-</div>
+    if(autoSubmit){
 
+        resultHTML += `
 
-<div class="result-item">
-👤 Nama:
-<b>${escapeHTML(playerName)}</b>
-</div>
+            <div class="result-item">
+                ⏰ Masa habis.
+                Quiz telah auto-submit.
+            </div>
 
+        `;
 
-<div class="result-item">
-🎖️ Pangkat Sekarang:
-<b>${escapeHTML(currentRank)}</b>
-</div>
+    }
 
 
-<div class="result-item">
-🎯 Pangkat Tujuan:
-<b>Senior Mekanik</b>
-</div>
+    resultHTML += `
 
+        <br>
 
-<div class="result-item">
-📊 Markah:
-<b>${score}/20</b>
-</div>
+        <h3>
+            📝 DETAIL JAWAPAN
+        </h3>
 
+    `;
 
-<div class="result-item">
-📈 Score:
-<b>${percentage}%</b>
-</div>
 
+    /* =================================================
+       DETAIL JAWAPAN WEBSITE
+    ================================================= */
 
-<div class="result-item">
-❓ Tidak Dijawab:
-<b>${unanswered}</b>
-</div>
+    details.forEach(item => {
 
-`;
+        if(item.correct){
 
+            resultHTML += `
 
-if(autoSubmit){
+                <div class="result-item correct">
 
-resultHTML += `
+                    <b>
+                        ${item.number}. ✅ BETUL
+                    </b>
 
-<div class="result-item">
-⏰ Masa habis.
-Quiz telah auto-submit.
-</div>
+                    <br>
 
-`;
+                    Jawapan:
+                    <b>${item.answer}</b>
 
-}
+                </div>
 
+            `;
 
-resultHTML += `
+        }else{
 
-<br>
+            resultHTML += `
 
-<h3>
-📝 DETAIL JAWAPAN
-</h3>
+                <div class="result-item wrong">
 
-`;
+                    <b>
+                        ${item.number}. ❌ SALAH
+                    </b>
 
+                    <br>
 
-/* =================================================
-   DETAIL JAWAPAN
-================================================= */
+                    Jawapan:
+                    <b>${item.answer}</b>
 
-details.forEach(item => {
+                    <br>
 
-if(item.correct){
+                    Jawapan Betul:
+                    <b>${item.correctAnswer}</b>
 
-resultHTML += `
+                </div>
 
-<div class="result-item correct">
+            `;
 
-<b>
-${item.number}. ✅ BETUL
-</b>
+        }
 
-<br>
+    });
 
-Jawapan:
-<b>${item.answer}</b>
 
-</div>
+    result.innerHTML = resultHTML;
 
-`;
 
-}else{
+    /* =================================================
+       LOCK QUIZ
+    ================================================= */
 
-resultHTML += `
+    document
+    .querySelectorAll("input")
+    .forEach(input => {
 
-<div class="result-item wrong">
+        input.disabled = true;
 
-<b>
-${item.number}. ❌ SALAH
-</b>
+    });
 
-<br>
 
-Jawapan:
-<b>${item.answer}</b>
+    document
+    .getElementById("submitBtn")
+    .disabled = true;
 
-<br>
 
-Jawapan Betul:
-<b>${item.correctAnswer}</b>
+    /* =================================================
+       STATUS DISCORD
+    ================================================= */
 
-</div>
+    result.innerHTML += `
 
-`;
+        <div
+            id="sendingStatus"
+            class="sending"
+        >
+            📤 Menghantar result ke Discord...
+        </div>
 
-}
+    `;
 
-});
 
+    /* =================================================
+       SEND DISCORD
+    ================================================= */
 
-result.innerHTML =
-resultHTML;
+    const success =
+        await sendToDiscord({
 
+            playerName,
+            currentRank,
+            score,
+            percentage,
+            status,
+            unanswered,
+            details
 
-/* =================================================
-   LOCK QUIZ
-================================================= */
+        });
 
-document
-.querySelectorAll("input")
-.forEach(input => {
 
-input.disabled = true;
+    const sendingStatus =
+        document.getElementById("sendingStatus");
 
-});
 
+    if(success){
 
-document
-.getElementById("submitBtn")
-.disabled = true;
+        sendingStatus.innerHTML =
+            "✅ Result berjaya dihantar ke Discord.";
 
+    }else{
 
-/* =================================================
-   STATUS
-================================================= */
+        sendingStatus.innerHTML =
+            "⚠️ Quiz selesai. Semak Discord jika result sudah masuk.";
 
-result.innerHTML += `
-
-<div
-id="sendingStatus"
-class="sending"
->
-📤 Menghantar result ke Discord...
-</div>
-
-`;
-
-
-/* =================================================
-   SEND
-================================================= */
-
-const success =
-await sendToDiscord({
-
-playerName,
-currentRank,
-score,
-percentage,
-status,
-unanswered,
-details
-
-});
-
-
-const sendingStatus =
-document.getElementById(
-"sendingStatus"
-);
-
-
-if(success){
-
-sendingStatus.innerHTML =
-"✅ Result berjaya dihantar ke Discord.";
-
-}else{
-
-sendingStatus.innerHTML =
-"❌ Gagal hantar result ke Discord. Sila semak Console.";
-
-}
+    }
 
 }
 
@@ -1320,257 +1303,265 @@ sendingStatus.innerHTML =
 
 async function sendToDiscord(data){
 
-try{
+    try{
 
-let answerText = "";
+        /* =================================================
+           BUAT SENARAI DETAIL
+        ================================================= */
 
+        let answerText = "";
 
-data.details.forEach(item => {
 
-if(item.correct){
+        data.details.forEach(item => {
 
-answerText +=
-`**${item.number}. ✅ BETUL**\n` +
-`Jawapan: **${item.answer}**\n\n`;
+            if(item.correct){
 
-}else{
+                answerText +=
+                    `**${item.number}. ✅ BETUL**\n` +
+                    `Jawapan: **${item.answer}**\n\n`;
 
-answerText +=
-`**${item.number}. ❌ SALAH**\n` +
-`Jawapan: **${item.answer}**\n` +
-`Jawapan Betul: **${item.correctAnswer}**\n\n`;
+            }else{
 
-}
+                answerText +=
+                    `**${item.number}. ❌ SALAH**\n` +
+                    `Jawapan: **${item.answer}**\n` +
+                    `Jawapan Betul: **${item.correctAnswer}**\n\n`;
 
-});
+            }
 
+        });
 
-/* =================================================
-   PECAHKAN JAWAPAN
-================================================= */
 
-const chunks = [];
+        /* =================================================
+           PECAHKAN DETAIL
+           DISCORD FIELD MAX 1024 CHAR
+        ================================================= */
 
-let currentChunk = "";
+        const chunks = [];
 
+        let currentChunk = "";
 
-answerText
-.split("\n\n")
-.forEach(line => {
 
-const testChunk =
-currentChunk +
-line +
-"\n\n";
+        answerText
+        .split("\n\n")
+        .forEach(line => {
 
+            const testChunk =
+                currentChunk +
+                line +
+                "\n\n";
 
-if(testChunk.length > 900){
 
-if(currentChunk){
-chunks.push(currentChunk);
-}
+            if(testChunk.length > 950){
 
-currentChunk =
-line +
-"\n\n";
+                if(currentChunk){
 
-}else{
+                    chunks.push(
+                        currentChunk
+                    );
 
-currentChunk =
-testChunk;
+                }
 
-}
+                currentChunk =
+                    line +
+                    "\n\n";
 
-});
+            }else{
 
+                currentChunk =
+                    testChunk;
 
-if(currentChunk){
+            }
 
-chunks.push(currentChunk);
+        });
 
-}
 
+        if(currentChunk){
 
-/* =================================================
-   DISCORD FIELDS
-================================================= */
+            chunks.push(
+                currentChunk
+            );
 
-const fields = [
+        }
 
-{
-name:"👤 NAMA",
-value:
-String(data.playerName)
-.substring(0,1024),
-inline:true
-},
 
+        /* =================================================
+           DISCORD FIELDS
+        ================================================= */
 
-{
-name:"🎖️ PANGKAT SEKARANG",
-value:
-String(data.currentRank)
-.substring(0,1024),
-inline:true
-},
+        const fields = [
 
+            {
+                name:"👤 NAMA",
+                value:
+                    String(data.playerName)
+                    .substring(0,1024),
+                inline:true
+            },
 
-{
-name:"🎯 PANGKAT TUJUAN",
-value:
-"SENIOR MEKANIK",
-inline:true
-},
 
+            {
+                name:"🎖️ PANGKAT SEKARANG",
+                value:
+                    String(data.currentRank)
+                    .substring(0,1024),
+                inline:true
+            },
 
-{
-name:"📊 MARKAH",
-value:
-`${data.score}/20`,
-inline:true
-},
 
+            {
+                name:"🎯 PANGKAT TUJUAN",
+                value:
+                    "SENIOR MEKANIK",
+                inline:true
+            },
 
-{
-name:"📈 SCORE",
-value:
-`${data.percentage}%`,
-inline:true
-},
 
+            {
+                name:"📊 MARKAH",
+                value:
+                    `${data.score}/20`,
+                inline:true
+            },
 
-{
-name:"📋 STATUS",
-value:
-data.status === "LULUS"
-? "🟢 **LULUS**"
-: "🔴 **GAGAL**",
-inline:true
-},
 
+            {
+                name:"📈 SCORE",
+                value:
+                    `${data.percentage}%`,
+                inline:true
+            },
 
-{
-name:"❓ TIDAK DIJAWAB",
-value:
-String(data.unanswered),
-inline:true
-}
 
-];
+            {
+                name:"📋 STATUS",
+                value:
+                    data.status === "LULUS"
+                    ? "🟢 **LULUS**"
+                    : "🔴 **GAGAL**",
+                inline:true
+            },
 
 
-chunks.forEach(
-(chunk,index) => {
+            {
+                name:"❓ TIDAK DIJAWAB",
+                value:
+                    String(data.unanswered),
+                inline:true
+            }
 
-fields.push({
+        ];
 
-name:
-`📝 JAWAPAN ${index + 1}`,
 
-value:
-chunk.substring(0,1024),
+        /* =================================================
+           MASUKKAN SEMUA JAWAPAN
+        ================================================= */
 
-inline:false
+        chunks.forEach((chunk,index) => {
 
-});
+            fields.push({
 
-}
-);
+                name:
+                    `📝 JAWAPAN ${index + 1}`,
 
+                value:
+                    chunk.substring(0,1024),
 
-/* =================================================
-   PAYLOAD
-================================================= */
+                inline:false
 
-const payload = {
+            });
 
-username:
-"RK GARAGE",
+        });
 
-embeds:[{
 
-title:
-"🔧 RK GARAGE — TEST SENIOR MEKANIK",
+        /* =================================================
+           DISCORD PAYLOAD
+        ================================================= */
 
-description:
-"**HASIL TEST KENAIKAN PANGKAT**\n" +
-"MEKANIK → SENIOR MEKANIK",
+        const payload = {
 
-color:
-data.status === "LULUS"
-? 3066993
-: 15158332,
+            username:
+                "RK GARAGE",
 
-fields:
-fields,
+            embeds:[{
 
-footer:{
-text:
-"RK GARAGE • Senior Mechanic Promotion Test"
-},
+                title:
+                    "🔧 RK GARAGE — TEST SENIOR MEKANIK",
 
-timestamp:
-new Date().toISOString()
+                description:
+                    "**HASIL TEST KENAIKAN PANGKAT**\n" +
+                    "MEKANIK → SENIOR MEKANIK",
 
-}]
+                color:
+                    data.status === "LULUS"
+                    ? 3066993
+                    : 15158332,
 
-};
+                fields:
+                    fields,
 
+                footer:{
+                    text:
+                        "RK GARAGE • Senior Mechanic Promotion Test"
+                },
 
-/* =================================================
-   FETCH DISCORD
-================================================= */
+                timestamp:
+                    new Date().toISOString()
 
-const response =
-await fetch(
+            }]
 
-WEBHOOK_URL,
+        };
 
-{
 
-method:"POST",
+        /* =================================================
+           FETCH DISCORD
+           
+           PENTING:
+           no-cors + text/plain elak preflight CORS
+        ================================================= */
 
-headers:{
-"Content-Type":
-"application/json"
-},
+        await fetch(
 
-body:
-JSON.stringify(payload)
+            WEBHOOK_URL,
 
-});
+            {
 
+                method:"POST",
 
-if(!response.ok){
+                mode:"no-cors",
 
-const errorText =
-await response.text()
-.catch(() => "");
+                headers:{
+                    "Content-Type":
+                        "text/plain;charset=UTF-8"
+                },
 
-console.error(
-"Discord Error:",
-response.status,
-errorText
-);
+                body:
+                    JSON.stringify(payload)
 
-return false;
+            }
 
-}
+        );
 
 
-return true;
+        /*
+           no-cors menghasilkan opaque response.
+           Jadi browser memang tak boleh baca response Discord.
+           Tetapi request telah dihantar.
+        */
 
+        return true;
 
-}catch(error){
 
-console.error(
-"Discord Webhook Error:",
-error
-);
+    }catch(error){
 
-return false;
+        console.error(
+            "Discord Webhook Error:",
+            error
+        );
 
-}
+        return false;
+
+    }
 
 }
 
@@ -1581,32 +1572,32 @@ return false;
 
 function escapeHTML(text){
 
-return String(text)
+    return String(text)
 
-.replace(
-/&/g,
-"&amp;"
-)
+        .replace(
+            /&/g,
+            "&amp;"
+        )
 
-.replace(
-/</g,
-"&lt;"
-)
+        .replace(
+            /</g,
+            "&lt;"
+        )
 
-.replace(
-/>/g,
-"&gt;"
-)
+        .replace(
+            />/g,
+            "&gt;"
+        )
 
-.replace(
-/"/g,
-"&quot;"
-)
+        .replace(
+            /"/g,
+            "&quot;"
+        )
 
-.replace(
-/'/g,
-"&#039;"
-);
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
 }
 
