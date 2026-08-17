@@ -154,6 +154,7 @@ body{
     margin-top:8px;
     background:#111;
     border-radius:8px;
+    line-height:1.5;
 }
 
 .correct{
@@ -196,9 +197,12 @@ QUIZ KENAIKAN PANGKAT<br>
 
 </div>
 
+
 <div class="info">
 
 <span>📝 20 SOAL</span>
+
+<span>📻 RADIO 35.55</span>
 
 <span id="timer">
 ⏱️ 05:00
@@ -206,7 +210,9 @@ QUIZ KENAIKAN PANGKAT<br>
 
 </div>
 
+
 <form id="quizForm">
+
 
 <!-- NAMA -->
 
@@ -891,11 +897,10 @@ SUBMIT QUIZ
 
 /* =====================================================
    DISCORD WEBHOOK
-   MASUKKAN WEBHOOK BARU KAU DI SINI
 ===================================================== */
 
 const WEBHOOK_URL =
-"PASTE_WEBHOOK_DISCORD_BARU_DI_SINI";
+"https://canary.discord.com/api/webhooks/1537805232279650324/GnPIJQABGGBIVPS1dukEoHB2zQOqmXFPeTKPlaN1RDEIUyJedkMNIS5e5KEwRHgcIaSR";
 
 
 /* =====================================================
@@ -904,26 +909,26 @@ const WEBHOOK_URL =
 
 const correctAnswers = {
 
-    q1:"B",
-    q2:"C",
-    q3:"C",
-    q4:"B",
-    q5:"C",
-    q6:"C",
-    q7:"C",
-    q8:"B",
-    q9:"C",
-    q10:"B",
-    q11:"C",
-    q12:"C",
-    q13:"C",
-    q14:"C",
-    q15:"C",
-    q16:"B",
-    q17:"A",
-    q18:"A",
-    q19:"B",
-    q20:"C"
+q1:"B",
+q2:"C",
+q3:"C",
+q4:"B",
+q5:"C",
+q6:"C",
+q7:"C",
+q8:"B",
+q9:"C",
+q10:"B",
+q11:"C",
+q12:"C",
+q13:"C",
+q14:"C",
+q15:"C",
+q16:"B",
+q17:"A",
+q18:"A",
+q19:"B",
+q20:"C"
 
 };
 
@@ -937,28 +942,28 @@ let submitted = false;
 
 const timerInterval = setInterval(() => {
 
-    if(submitted){
-        return;
-    }
+if(submitted){
+return;
+}
 
-    timeLeft--;
+timeLeft--;
 
-    const minutes =
-        Math.floor(timeLeft / 60);
+const minutes =
+Math.floor(timeLeft / 60);
 
-    const seconds =
-        timeLeft % 60;
+const seconds =
+timeLeft % 60;
 
-    document.getElementById("timer").textContent =
-        `⏱️ ${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`;
+document.getElementById("timer").textContent =
+`⏱️ ${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`;
 
-    if(timeLeft <= 0){
+if(timeLeft <= 0){
 
-        clearInterval(timerInterval);
+clearInterval(timerInterval);
 
-        submitQuiz(true);
+submitQuiz(true);
 
-    }
+}
 
 },1000);
 
@@ -971,9 +976,9 @@ document
 .getElementById("quizForm")
 .addEventListener("submit",function(event){
 
-    event.preventDefault();
+event.preventDefault();
 
-    submitQuiz(false);
+submitQuiz(false);
 
 });
 
@@ -984,315 +989,466 @@ document
 
 async function submitQuiz(autoSubmit){
 
-    if(submitted){
-        return;
-    }
+if(submitted){
+return;
+}
 
-    const playerName =
-        document
-        .getElementById("playerName")
-        .value
-        .trim();
 
-    const currentRank =
-        document
-        .getElementById("currentRank")
-        .value
-        .trim();
+const playerName =
+document
+.getElementById("playerName")
+.value
+.trim();
 
-    if(!playerName || !currentRank){
 
-        alert(
-            "SILA ISI NAMA DAN PANGKAT SEKARANG."
-        );
+const currentRank =
+document
+.getElementById("currentRank")
+.value
+.trim();
 
-        return;
-    }
 
-    submitted = true;
+if(!playerName || !currentRank){
 
-    clearInterval(timerInterval);
+alert(
+"SILA ISI NAMA DAN PANGKAT SEKARANG."
+);
 
-    let score = 0;
-    let unanswered = 0;
+return;
 
-    const details = [];
+}
 
 
-    /* =================================================
-       CHECK SEMUA SOAL
-    ================================================= */
+submitted = true;
 
-    for(let i = 1; i <= 20; i++){
+clearInterval(timerInterval);
 
-        const questionKey = "q" + i;
 
-        const selected =
-            document.querySelector(
-                `input[name="${questionKey}"]:checked`
-            );
+let score = 0;
 
-        const userAnswer =
-            selected
-            ? selected.value
-            : "TIDAK DIJAWAB";
+let unanswered = 0;
 
-        const correctAnswer =
-            correctAnswers[questionKey];
+const details = [];
 
-        const isCorrect =
-            userAnswer === correctAnswer;
 
-        if(isCorrect){
-            score++;
-        }
+/* =====================================================
+   CHECK 20 SOAL
+===================================================== */
 
-        if(!selected){
-            unanswered++;
-        }
+for(let i = 1; i <= 20; i++){
 
-        details.push({
+const questionKey =
+"q" + i;
 
-            number:i,
 
-            answer:userAnswer,
+/* INPUT YANG DIPILIH */
 
-            correctAnswer:correctAnswer,
+const selected =
+document.querySelector(
+`input[name="${questionKey}"]:checked`
+);
 
-            correct:isCorrect
 
-        });
+/* QUESTION BOX */
 
-    }
+const questionBox =
+document.querySelector(
+`input[name="${questionKey}"]`
+).closest(".question");
 
 
-    const percentage =
-        Math.round(
-            (score / 20) * 100
-        );
+/* TEKS SOAL */
 
+let questionText = "";
 
-    const status =
-        score >= 16
-        ? "LULUS"
-        : "GAGAL";
+const title =
+questionBox.querySelector(".question-title");
 
+if(title){
 
-    /* =================================================
-       PAPAR RESULT
-    ================================================= */
+questionText =
+title.innerText
+.replace(/\s+/g," ")
+.trim();
 
-    const result =
-        document.getElementById("result");
+/* BUANG NOMBOR DI DEPAN */
 
-    result.style.display = "block";
+questionText =
+questionText.replace(
+/^\d+\.\s*/,
+""
+);
 
-    result.className =
-        status === "LULUS"
-        ? "pass"
-        : "fail";
+}
 
 
-    let resultHTML = `
+/* JAWAPAN USER */
 
-        <div class="result-title">
+let userAnswer =
+selected
+? selected.value
+: "TIDAK DIJAWAB";
 
-            ${
-                status === "LULUS"
-                ? "🎉 LULUS"
-                : "❌ GAGAL"
-            }
 
-        </div>
+let userAnswerText =
+"TIDAK DIJAWAB";
 
 
-        <div class="result-item">
-            👤 Nama:
-            <b>${escapeHTML(playerName)}</b>
-        </div>
+if(selected){
 
+const label =
+selected.closest("label");
 
-        <div class="result-item">
-            🎖️ Pangkat Sekarang:
-            <b>${escapeHTML(currentRank)}</b>
-        </div>
+if(label){
 
+userAnswerText =
+label.innerText
+.replace(/\s+/g," ")
+.trim();
 
-        <div class="result-item">
-            🎯 Pangkat Tujuan:
-            <b>Senior Mekanik</b>
-        </div>
+}else{
 
+userAnswerText =
+selected.value;
 
-        <div class="result-item">
-            📊 Markah:
-            <b>${score}/20</b>
-        </div>
+}
 
+}
 
-        <div class="result-item">
-            📈 Score:
-            <b>${percentage}%</b>
-        </div>
 
+/* JAWAPAN BETUL */
 
-        <div class="result-item">
-            ❓ Tidak Dijawab:
-            <b>${unanswered}</b>
-        </div>
+const correctAnswer =
+correctAnswers[questionKey];
 
-    `;
 
+let correctAnswerText =
+correctAnswer;
 
-    if(autoSubmit){
 
-        resultHTML += `
+const correctInput =
+questionBox.querySelector(
+`input[value="${correctAnswer}"]`
+);
 
-            <div class="result-item">
-                ⏰ Masa habis.
-                Quiz telah auto-submit.
-            </div>
 
-        `;
+if(correctInput){
 
-    }
+const correctLabel =
+correctInput.closest("label");
 
+if(correctLabel){
 
-    resultHTML += `
+correctAnswerText =
+correctLabel.innerText
+.replace(/\s+/g," ")
+.trim();
 
-        <br>
+}
 
-        <h3>
-            📝 DETAIL JAWAPAN
-        </h3>
+}
 
-    `;
 
+/* CHECK */
 
-    /* =================================================
-       DETAIL JAWAPAN WEBSITE
-    ================================================= */
+const isCorrect =
+userAnswer === correctAnswer;
 
-    details.forEach(item => {
 
-        if(item.correct){
+if(isCorrect){
 
-            resultHTML += `
+score++;
 
-                <div class="result-item correct">
+}
 
-                    <b>
-                        ${item.number}. ✅ BETUL
-                    </b>
 
-                    <br>
+if(!selected){
 
-                    Jawapan:
-                    <b>${item.answer}</b>
+unanswered++;
 
-                </div>
+}
 
-            `;
 
-        }else{
+/* SIMPAN */
 
-            resultHTML += `
+details.push({
 
-                <div class="result-item wrong">
+number:i,
 
-                    <b>
-                        ${item.number}. ❌ SALAH
-                    </b>
+question:questionText,
 
-                    <br>
+answer:userAnswer,
 
-                    Jawapan:
-                    <b>${item.answer}</b>
+answerText:userAnswerText,
 
-                    <br>
+correctAnswer:correctAnswer,
 
-                    Jawapan Betul:
-                    <b>${item.correctAnswer}</b>
+correctAnswerText:correctAnswerText,
 
-                </div>
+correct:isCorrect
 
-            `;
+});
 
-        }
+}
 
-    });
 
+/* =====================================================
+   SCORE
+===================================================== */
 
-    result.innerHTML = resultHTML;
+const percentage =
+Math.round(
+(score / 20) * 100
+);
 
 
-    /* =================================================
-       LOCK QUIZ
-    ================================================= */
+const status =
+score >= 16
+? "LULUS"
+: "GAGAL";
 
-    document
-    .querySelectorAll("input")
-    .forEach(input => {
 
-        input.disabled = true;
+/* =====================================================
+   PAPAR RESULT
+===================================================== */
 
-    });
+const result =
+document.getElementById("result");
 
+result.style.display =
+"block";
 
-    document
-    .getElementById("submitBtn")
-    .disabled = true;
+result.className =
+status === "LULUS"
+? "pass"
+: "fail";
 
 
-    /* =================================================
-       STATUS DISCORD
-    ================================================= */
+let resultHTML = `
 
-    result.innerHTML += `
+<div class="result-title">
 
-        <div
-            id="sendingStatus"
-            class="sending"
-        >
-            📤 Menghantar result ke Discord...
-        </div>
+${
+status === "LULUS"
+? "🎉 LULUS"
+: "❌ GAGAL"
+}
 
-    `;
+</div>
 
 
-    /* =================================================
-       SEND DISCORD
-    ================================================= */
+<div class="result-item">
 
-    const success =
-        await sendToDiscord({
+👤 Nama:
+<b>${escapeHTML(playerName)}</b>
 
-            playerName,
-            currentRank,
-            score,
-            percentage,
-            status,
-            unanswered,
-            details
+</div>
 
-        });
 
+<div class="result-item">
 
-    const sendingStatus =
-        document.getElementById("sendingStatus");
+🎖️ Pangkat Sekarang:
+<b>${escapeHTML(currentRank)}</b>
 
+</div>
 
-    if(success){
 
-        sendingStatus.innerHTML =
-            "✅ Result berjaya dihantar ke Discord.";
+<div class="result-item">
 
-    }else{
+🎯 Pangkat Tujuan:
+<b>Senior Mekanik</b>
 
-        sendingStatus.innerHTML =
-            "⚠️ Quiz selesai. Semak Discord jika result sudah masuk.";
+</div>
 
-    }
+
+<div class="result-item">
+
+📊 Markah:
+<b>${score}/20</b>
+
+</div>
+
+
+<div class="result-item">
+
+📈 Score:
+<b>${percentage}%</b>
+
+</div>
+
+
+<div class="result-item">
+
+❓ Tidak Dijawab:
+<b>${unanswered}</b>
+
+</div>
+
+
+<br>
+
+<h3>
+📝 DETAIL JAWAPAN
+</h3>
+
+`;
+
+
+/* =====================================================
+   DETAIL WEBSITE
+===================================================== */
+
+details.forEach(item => {
+
+if(item.correct){
+
+resultHTML += `
+
+<div class="result-item correct">
+
+<b>
+${item.number}. ✅ BETUL
+</b>
+
+<br><br>
+
+<b>SOAL:</b><br>
+${escapeHTML(item.question)}
+
+<br><br>
+
+<b>JAWAPAN:</b><br>
+${escapeHTML(item.answerText)}
+
+</div>
+
+`;
+
+}else{
+
+resultHTML += `
+
+<div class="result-item wrong">
+
+<b>
+${item.number}. ❌ SALAH
+</b>
+
+<br><br>
+
+<b>SOAL:</b><br>
+${escapeHTML(item.question)}
+
+<br><br>
+
+<b>JAWAPAN:</b><br>
+${escapeHTML(item.answerText)}
+
+<br><br>
+
+<b>JAWAPAN BETUL:</b><br>
+${escapeHTML(item.correctAnswerText)}
+
+</div>
+
+`;
+
+}
+
+});
+
+
+if(autoSubmit){
+
+resultHTML += `
+
+<div class="result-item">
+
+⏰ Masa habis.
+Quiz telah auto-submit.
+
+</div>
+
+`;
+
+}
+
+
+result.innerHTML =
+resultHTML;
+
+
+/* =====================================================
+   LOCK QUIZ
+===================================================== */
+
+document
+.querySelectorAll("input")
+.forEach(input => {
+
+input.disabled = true;
+
+});
+
+
+document
+.getElementById("submitBtn")
+.disabled = true;
+
+
+/* =====================================================
+   STATUS DISCORD
+===================================================== */
+
+result.innerHTML += `
+
+<div
+id="sendingStatus"
+class="sending"
+>
+
+📤 Menghantar result ke Discord...
+
+</div>
+
+`;
+
+
+/* =====================================================
+   SEND DISCORD
+===================================================== */
+
+const success =
+await sendToDiscord({
+
+playerName,
+currentRank,
+score,
+percentage,
+status,
+unanswered,
+details
+
+});
+
+
+const sendingStatus =
+document.getElementById(
+"sendingStatus"
+);
+
+
+if(success){
+
+sendingStatus.innerHTML =
+"✅ Result berjaya dihantar ke Discord.";
+
+}else{
+
+sendingStatus.innerHTML =
+"❌ Gagal hantar result ke Discord. Sila semak Console.";
+
+}
 
 }
 
@@ -1303,265 +1459,285 @@ async function submitQuiz(autoSubmit){
 
 async function sendToDiscord(data){
 
-    try{
+try{
+
+
+/* =================================================
+   SUMMARY
+================================================= */
+
+const summaryEmbed = {
+
+title:
+"🔧 RK GARAGE — TEST SENIOR MEKANIK",
+
+description:
+"**HASIL TEST KENAIKAN PANGKAT**\n" +
+"MEKANIK → SENIOR MEKANIK",
+
+color:
+data.status === "LULUS"
+? 3066993
+: 15158332,
+
+fields:[
+
+{
+name:"👤 NAMA",
+value:
+String(data.playerName)
+.substring(0,1024),
+inline:true
+},
 
-        /* =================================================
-           BUAT SENARAI DETAIL
-        ================================================= */
+{
+name:"🎖️ PANGKAT SEKARANG",
+value:
+String(data.currentRank)
+.substring(0,1024),
+inline:true
+},
 
-        let answerText = "";
+{
+name:"🎯 PANGKAT TUJUAN",
+value:
+"SENIOR MEKANIK",
+inline:true
+},
 
+{
+name:"📊 MARKAH",
+value:
+`${data.score}/20`,
+inline:true
+},
 
-        data.details.forEach(item => {
+{
+name:"📈 SCORE",
+value:
+`${data.percentage}%`,
+inline:true
+},
 
-            if(item.correct){
+{
+name:"📋 STATUS",
+value:
+data.status === "LULUS"
+? "🟢 **LULUS**"
+: "🔴 **GAGAL**",
+inline:true
+},
 
-                answerText +=
-                    `**${item.number}. ✅ BETUL**\n` +
-                    `Jawapan: **${item.answer}**\n\n`;
+{
+name:"❓ TIDAK DIJAWAB",
+value:
+String(data.unanswered),
+inline:true
+}
 
-            }else{
+],
 
-                answerText +=
-                    `**${item.number}. ❌ SALAH**\n` +
-                    `Jawapan: **${item.answer}**\n` +
-                    `Jawapan Betul: **${item.correctAnswer}**\n\n`;
+footer:{
+text:
+"RK GARAGE • Senior Mechanic Promotion Test"
+},
 
-            }
+timestamp:
+new Date().toISOString()
 
-        });
+};
 
 
-        /* =================================================
-           PECAHKAN DETAIL
-           DISCORD FIELD MAX 1024 CHAR
-        ================================================= */
+/* =================================================
+   BUAT EMBED DETAIL
+================================================= */
 
-        const chunks = [];
+const detailEmbeds = [];
 
-        let currentChunk = "";
 
+/*
+   5 SOAL SETIAP EMBED
+   SUPAYA SOAL + JAWAPAN PENUH
+   TIDAK POTONG
+*/
 
-        answerText
-        .split("\n\n")
-        .forEach(line => {
+for(
+let start = 0;
+start < data.details.length;
+start += 5
+){
 
-            const testChunk =
-                currentChunk +
-                line +
-                "\n\n";
+const group =
+data.details.slice(
+start,
+start + 5
+);
 
 
-            if(testChunk.length > 950){
+const fields =
+group.map(item => {
 
-                if(currentChunk){
+let text = "";
 
-                    chunks.push(
-                        currentChunk
-                    );
 
-                }
+/* SOAL */
 
-                currentChunk =
-                    line +
-                    "\n\n";
+text +=
+"**SOAL:**\n" +
+item.question +
+"\n\n";
 
-            }else{
 
-                currentChunk =
-                    testChunk;
+/* JAWAPAN USER */
 
-            }
+text +=
+"**JAWAPAN:**\n" +
+item.answerText +
+"\n\n";
 
-        });
 
+/* RESULT */
 
-        if(currentChunk){
+if(item.correct){
 
-            chunks.push(
-                currentChunk
-            );
+text +=
+"✅ **BETUL**";
 
-        }
+}else{
 
+text +=
+"**JAWAPAN BETUL:**\n" +
+item.correctAnswerText +
+"\n\n" +
+"❌ **SALAH**";
 
-        /* =================================================
-           DISCORD FIELDS
-        ================================================= */
+}
 
-        const fields = [
 
-            {
-                name:"👤 NAMA",
-                value:
-                    String(data.playerName)
-                    .substring(0,1024),
-                inline:true
-            },
+return {
 
+name:
+`${item.number}. ${
+item.correct
+? "✅ BETUL"
+: "❌ SALAH"
+}`,
 
-            {
-                name:"🎖️ PANGKAT SEKARANG",
-                value:
-                    String(data.currentRank)
-                    .substring(0,1024),
-                inline:true
-            },
+value:
+text.substring(0,1024),
 
+inline:false
 
-            {
-                name:"🎯 PANGKAT TUJUAN",
-                value:
-                    "SENIOR MEKANIK",
-                inline:true
-            },
+};
 
+});
 
-            {
-                name:"📊 MARKAH",
-                value:
-                    `${data.score}/20`,
-                inline:true
-            },
 
+detailEmbeds.push({
 
-            {
-                name:"📈 SCORE",
-                value:
-                    `${data.percentage}%`,
-                inline:true
-            },
+title:
+`📝 DETAIL JAWAPAN ${
+Math.floor(start / 5) + 1
+}`,
 
+color:
+data.status === "LULUS"
+? 3066993
+: 15158332,
 
-            {
-                name:"📋 STATUS",
-                value:
-                    data.status === "LULUS"
-                    ? "🟢 **LULUS**"
-                    : "🔴 **GAGAL**",
-                inline:true
-            },
+fields:fields,
 
+footer:{
+text:
+"RK GARAGE • Quiz Detail"
+}
 
-            {
-                name:"❓ TIDAK DIJAWAB",
-                value:
-                    String(data.unanswered),
-                inline:true
-            }
+});
 
-        ];
+}
 
 
-        /* =================================================
-           MASUKKAN SEMUA JAWAPAN
-        ================================================= */
+/* =================================================
+   PAYLOAD
+================================================= */
 
-        chunks.forEach((chunk,index) => {
+const payload = {
 
-            fields.push({
+username:
+"RK GARAGE",
 
-                name:
-                    `📝 JAWAPAN ${index + 1}`,
+embeds:[
 
-                value:
-                    chunk.substring(0,1024),
+summaryEmbed,
 
-                inline:false
+...detailEmbeds
 
-            });
+]
 
-        });
+};
 
 
-        /* =================================================
-           DISCORD PAYLOAD
-        ================================================= */
+/* =================================================
+   SEND KE DISCORD
+================================================= */
 
-        const payload = {
+const response =
+await fetch(
 
-            username:
-                "RK GARAGE",
+WEBHOOK_URL,
 
-            embeds:[{
+{
 
-                title:
-                    "🔧 RK GARAGE — TEST SENIOR MEKANIK",
+method:"POST",
 
-                description:
-                    "**HASIL TEST KENAIKAN PANGKAT**\n" +
-                    "MEKANIK → SENIOR MEKANIK",
+headers:{
+"Content-Type":
+"application/json"
+},
 
-                color:
-                    data.status === "LULUS"
-                    ? 3066993
-                    : 15158332,
+body:
+JSON.stringify(payload)
 
-                fields:
-                    fields,
+}
 
-                footer:{
-                    text:
-                        "RK GARAGE • Senior Mechanic Promotion Test"
-                },
+);
 
-                timestamp:
-                    new Date().toISOString()
 
-            }]
+/* =================================================
+   CHECK RESPONSE
+================================================= */
 
-        };
+if(!response.ok){
 
+const errorText =
+await response.text()
+.catch(() => "");
 
-        /* =================================================
-           FETCH DISCORD
-           
-           PENTING:
-           no-cors + text/plain elak preflight CORS
-        ================================================= */
 
-        await fetch(
+console.error(
+"Discord Error:",
+response.status,
+errorText
+);
 
-            WEBHOOK_URL,
+return false;
 
-            {
+}
 
-                method:"POST",
 
-                mode:"no-cors",
+return true;
 
-                headers:{
-                    "Content-Type":
-                        "text/plain;charset=UTF-8"
-                },
 
-                body:
-                    JSON.stringify(payload)
+}catch(error){
 
-            }
+console.error(
+"Discord Webhook Error:",
+error
+);
 
-        );
+return false;
 
-
-        /*
-           no-cors menghasilkan opaque response.
-           Jadi browser memang tak boleh baca response Discord.
-           Tetapi request telah dihantar.
-        */
-
-        return true;
-
-
-    }catch(error){
-
-        console.error(
-            "Discord Webhook Error:",
-            error
-        );
-
-        return false;
-
-    }
+}
 
 }
 
@@ -1572,32 +1748,32 @@ async function sendToDiscord(data){
 
 function escapeHTML(text){
 
-    return String(text)
+return String(text)
 
-        .replace(
-            /&/g,
-            "&amp;"
-        )
+.replace(
+/&/g,
+"&amp;"
+)
 
-        .replace(
-            /</g,
-            "&lt;"
-        )
+.replace(
+/</g,
+"&lt;"
+)
 
-        .replace(
-            />/g,
-            "&gt;"
-        )
+.replace(
+/>/g,
+"&gt;"
+)
 
-        .replace(
-            /"/g,
-            "&quot;"
-        )
+.replace(
+/"/g,
+"&quot;"
+)
 
-        .replace(
-            /'/g,
-            "&#039;"
-        );
+.replace(
+/'/g,
+"&#039;"
+);
 
 }
 
