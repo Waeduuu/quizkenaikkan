@@ -1,894 +1,8 @@
-<!DOCTYPE html>
-<html lang="ms">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RK Garage | Senior Mechanic Test</title>
-
-<style>
-*{box-sizing:border-box}
-
-body{
-    margin:0;
-    padding:20px;
-    background:#080808;
-    color:#fff;
-    font-family:Arial,Helvetica,sans-serif;
-}
-
-.container{
-    max-width:850px;
-    margin:auto;
-    background:#151515;
-    border:1px solid #292929;
-    border-radius:18px;
-    padding:25px;
-}
-
-.header{
-    text-align:center;
-    margin-bottom:25px;
-}
-
-.logo{
-    font-size:34px;
-    font-weight:900;
-    color:#e63946;
-}
-
-.subtitle{
-    color:#aaa;
-    line-height:1.6;
-    margin-top:8px;
-}
-
-.info{
-    display:flex;
-    justify-content:space-between;
-    flex-wrap:wrap;
-    gap:10px;
-    background:#202020;
-    padding:15px;
-    border-radius:10px;
-    margin-bottom:20px;
-    font-weight:bold;
-}
-
-#timer{
-    color:#ff4d4d;
-}
-
-.question{
-    background:#202020;
-    padding:18px;
-    border-radius:12px;
-    margin-bottom:15px;
-}
-
-.question-title{
-    font-weight:bold;
-    line-height:1.5;
-    margin-bottom:12px;
-}
-
-.option{
-    display:block;
-    background:#292929;
-    padding:12px;
-    border-radius:8px;
-    margin:8px 0;
-    cursor:pointer;
-}
-
-.option:hover{
-    background:#363636;
-}
-
-.option input{
-    margin-right:8px;
-}
-
-.input{
-    width:100%;
-    padding:14px;
-    background:#101010;
-    color:#fff;
-    border:1px solid #444;
-    border-radius:8px;
-    outline:none;
-}
-
-.input:focus{
-    border-color:#e63946;
-}
-
-.submit{
-    width:100%;
-    padding:16px;
-    border:0;
-    border-radius:10px;
-    background:#e63946;
-    color:#fff;
-    font-size:16px;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-.submit:hover{
-    background:#ff4d5a;
-}
-
-.submit:disabled{
-    background:#555;
-    cursor:not-allowed;
-}
-
-#result{
-    display:none;
-    margin-top:20px;
-    padding:22px;
-    border-radius:12px;
-}
-
-.pass{
-    background:#12351f;
-    border:1px solid #2ecc71;
-}
-
-.fail{
-    background:#351212;
-    border:1px solid #e63946;
-}
-
-.result-title{
-    text-align:center;
-    font-size:30px;
-    font-weight:bold;
-    margin-bottom:15px;
-}
-
-.result-item{
-    padding:12px;
-    margin-top:8px;
-    background:#111;
-    border-radius:8px;
-}
-
-.correct{
-    border-left:4px solid #2ecc71;
-}
-
-.wrong{
-    border-left:4px solid #e63946;
-}
-
-.sending{
-    text-align:center;
-    margin-top:15px;
-    color:#aaa;
-}
-
-.footer{
-    text-align:center;
-    color:#777;
-    font-size:13px;
-    margin-top:20px;
-}
-</style>
-</head>
-
-<body>
-
-<div class="container">
-
-<div class="header">
-
-<div class="logo">
-🔧 RK GARAGE
-</div>
-
-<div class="subtitle">
-QUIZ KENAIKAN PANGKAT<br>
-<b>MEKANIK → SENIOR MEKANIK</b>
-</div>
-
-</div>
-
-<div class="info">
-
-<span>📝 20 SOAL</span>
-
-<span id="timer">
-⏱️ 05:00
-</span>
-
-</div>
-
-<form id="quizForm">
-
-<!-- NAMA -->
-
-<div class="question">
-
-<div class="question-title">
-👤 NAMA
-</div>
-
-<input
-type="text"
-id="playerName"
-class="input"
-placeholder="Masukkan nama"
-required
->
-
-</div>
-
-
-<!-- PANGKAT -->
-
-<div class="question">
-
-<div class="question-title">
-🎖️ PANGKAT SEKARANG
-</div>
-
-<input
-type="text"
-id="currentRank"
-class="input"
-placeholder="Contoh: Mekanik"
-required
->
-
-</div>
-
-
-<!-- SOAL 1 -->
-
-<div class="question">
-
-<div class="question-title">
-1. Customer meminta repair instan tanpa RP. Apa tindakan yang paling tepat?
-</div>
-
-<label class="option">
-<input type="radio" name="q1" value="A">
-A. Langsung repair
-</label>
-
-<label class="option">
-<input type="radio" name="q1" value="B">
-B. Melakukan RP sesuai SOP dan menyesuaikan waktu dengan kerosakan
-</label>
-
-<label class="option">
-<input type="radio" name="q1" value="C">
-C. Menolak customer
-</label>
-
-<label class="option">
-<input type="radio" name="q1" value="D">
-D. Menggunakan command tanpa proses
-</label>
-
-</div>
-
-
-<!-- SOAL 2 -->
-
-<div class="question">
-
-<div class="question-title">
-2. Teman datang ketika beberapa customer sedang antre. Apa tindakan yang benar?
-</div>
-
-<label class="option">
-<input type="radio" name="q2" value="A">
-A. Dahulukan teman
-</label>
-
-<label class="option">
-<input type="radio" name="q2" value="B">
-B. Dahulukan teman jika kenalan dekat
-</label>
-
-<label class="option">
-<input type="radio" name="q2" value="C">
-C. Ikut antrean dan melayani secara adil
-</label>
-
-<label class="option">
-<input type="radio" name="q2" value="D">
-D. Abaikan customer lain
-</label>
-
-</div>
-
-
-<!-- SOAL 3 -->
-
-<div class="question">
-
-<div class="question-title">
-3. Menemukan kerosakan tambahan pada kendaraan customer. Apa yang dilakukan?
-</div>
-
-<label class="option">
-<input type="radio" name="q3" value="A">
-A. Langsung repair
-</label>
-
-<label class="option">
-<input type="radio" name="q3" value="B">
-B. Abaikan
-</label>
-
-<label class="option">
-<input type="radio" name="q3" value="C">
-C. Jelaskan kerosakan serta estimasi harga dan waktu
-</label>
-
-<label class="option">
-<input type="radio" name="q3" value="D">
-D. Tentukan harga sendiri
-</label>
-
-</div>
-
-
-<!-- SOAL 4 -->
-
-<div class="question">
-
-<div class="question-title">
-4. Bagaimana penggunaan alat seperti kunci dan dongkrak?
-</div>
-
-<label class="option">
-<input type="radio" name="q4" value="A">
-A. Gunakan command terus
-</label>
-
-<label class="option">
-<input type="radio" name="q4" value="B">
-B. Gunakan alat melalui RP sesuai proses
-</label>
-
-<label class="option">
-<input type="radio" name="q4" value="C">
-C. Tidak perlu animasi
-</label>
-
-<label class="option">
-<input type="radio" name="q4" value="D">
-D. Bebas
-</label>
-
-</div>
-
-
-<!-- SOAL 5 -->
-
-<div class="question">
-
-<div class="question-title">
-5. Apakah mekanik boleh pilih kasih atau memprioritaskan teman?
-</div>
-
-<label class="option">
-<input type="radio" name="q5" value="A">
-A. Boleh
-</label>
-
-<label class="option">
-<input type="radio" name="q5" value="B">
-B. Boleh jika teman dekat
-</label>
-
-<label class="option">
-<input type="radio" name="q5" value="C">
-C. Tidak boleh
-</label>
-
-<label class="option">
-<input type="radio" name="q5" value="D">
-D. Boleh jika customer setuju
-</label>
-
-</div>
-
-
-<!-- SOAL 6 -->
-
-<div class="question">
-
-<div class="question-title">
-6. Mekanik lain melakukan repair tanpa RP. Sebagai calon Senior Mekanik apa tindakan terbaik?
-</div>
-
-<label class="option">
-<input type="radio" name="q6" value="A">
-A. Membiarkannya
-</label>
-
-<label class="option">
-<input type="radio" name="q6" value="B">
-B. Ikut melakukan
-</label>
-
-<label class="option">
-<input type="radio" name="q6" value="C">
-C. Mengingatkan SOP dan melaporkan jika berlanjut
-</label>
-
-<label class="option">
-<input type="radio" name="q6" value="D">
-D. Memarahinya di depan customer
-</label>
-
-</div>
-
-
-<!-- SOAL 7 -->
-
-<div class="question">
-
-<div class="question-title">
-7. Harga modifikasi wajib mengikuti apa?
-</div>
-
-<label class="option">
-<input type="radio" name="q7" value="A">
-A. Harga sendiri
-</label>
-
-<label class="option">
-<input type="radio" name="q7" value="B">
-B. Harga teman
-</label>
-
-<label class="option">
-<input type="radio" name="q7" value="C">
-C. Harga regulasi
-</label>
-
-<label class="option">
-<input type="radio" name="q7" value="D">
-D. Harga sesuka mekanik
-</label>
-
-</div>
-
-
-<!-- SOAL 8 -->
-
-<div class="question">
-
-<div class="question-title">
-8. Pembayaran modifikasi wajib menggunakan?
-</div>
-
-<label class="option">
-<input type="radio" name="q8" value="A">
-A. Cash pribadi
-</label>
-
-<label class="option">
-<input type="radio" name="q8" value="B">
-B. /billing
-</label>
-
-<label class="option">
-<input type="radio" name="q8" value="C">
-C. Transfer pribadi
-</label>
-
-<label class="option">
-<input type="radio" name="q8" value="D">
-D. Barang
-</label>
-
-</div>
-
-
-<!-- SOAL 9 -->
-
-<div class="question">
-
-<div class="question-title">
-9. Online Job wajib menggunakan kendaraan apa?
-</div>
-
-<label class="option">
-<input type="radio" name="q9" value="A">
-A. Kendaraan customer
-</label>
-
-<label class="option">
-<input type="radio" name="q9" value="B">
-B. Kendaraan pribadi
-</label>
-
-<label class="option">
-<input type="radio" name="q9" value="C">
-C. Kendaraan dinas
-</label>
-
-<label class="option">
-<input type="radio" name="q9" value="D">
-D. Kendaraan teman
-</label>
-
-</div>
-
-
-<!-- SOAL 10 -->
-
-<div class="question">
-
-<div class="question-title">
-10. Radio yang wajib di-standby adalah?
-</div>
-
-<label class="option">
-<input type="radio" name="q10" value="A">
-A. 35.00
-</label>
-
-<label class="option">
-<input type="radio" name="q10" value="B">
-B. 35.55
-</label>
-
-<label class="option">
-<input type="radio" name="q10" value="C">
-C. 36
-</label>
-
-<label class="option">
-<input type="radio" name="q10" value="D">
-D. 36.55
-</label>
-
-</div>
-
-
-<!-- SOAL 11 -->
-
-<div class="question">
-
-<div class="question-title">
-11. Apakah boleh menggunakan kendaraan customer untuk kepentingan pribadi?
-</div>
-
-<label class="option">
-<input type="radio" name="q11" value="A">
-A. Boleh
-</label>
-
-<label class="option">
-<input type="radio" name="q11" value="B">
-B. Boleh sebentar
-</label>
-
-<label class="option">
-<input type="radio" name="q11" value="C">
-C. Tidak boleh tanpa izin
-</label>
-
-<label class="option">
-<input type="radio" name="q11" value="D">
-D. Boleh ketika bengkel sepi
-</label>
-
-</div>
-
-
-<!-- SOAL 12 -->
-
-<div class="question">
-
-<div class="question-title">
-12. Jika AFK atau izin saat duty, apa yang wajib dilakukan?
-</div>
-
-<label class="option">
-<input type="radio" name="q12" value="A">
-A. Diam sahaja
-</label>
-
-<label class="option">
-<input type="radio" name="q12" value="B">
-B. Matikan radio
-</label>
-
-<label class="option">
-<input type="radio" name="q12" value="C">
-C. Lapor atau meminta izin
-</label>
-
-<label class="option">
-<input type="radio" name="q12" value="D">
-D. Tetap ON DUTY
-</label>
-
-</div>
-
-
-<!-- SOAL 13 -->
-
-<div class="question">
-
-<div class="question-title">
-13. Apa syarat naik dari Mekanik ke Senior Mekanik?
-</div>
-
-<label class="option">
-<input type="radio" name="q13" value="A">
-A. Hanya memiliki banyak jam duty
-</label>
-
-<label class="option">
-<input type="radio" name="q13" value="B">
-B. Dekat dengan management
-</label>
-
-<label class="option">
-<input type="radio" name="q13" value="C">
-C. Jam duty, aktif, disiplin, tidak melanggar SOP/SP, lulus test, sikap baik dan bertanggung jawab
-</label>
-
-<label class="option">
-<input type="radio" name="q13" value="D">
-D. Menjadi mekanik paling lama
-</label>
-
-</div>
-
-
-<!-- SOAL 14 -->
-
-<div class="question">
-
-<div class="question-title">
-14. Apa risiko mengganti kunci Job Bengkel menjadi Backside secara sepihak?
-</div>
-
-<label class="option">
-<input type="radio" name="q14" value="A">
-A. Tidak ada risiko
-</label>
-
-<label class="option">
-<input type="radio" name="q14" value="B">
-B. Hanya customer yang rugi
-</label>
-
-<label class="option">
-<input type="radio" name="q14" value="C">
-C. Jam duty berisiko tidak terhitung dan dapat dikenakan SP
-</label>
-
-<label class="option">
-<input type="radio" name="q14" value="D">
-D. Kendaraan otomatis rusak
-</label>
-
-</div>
-
-
-<!-- SOAL 15 -->
-
-<div class="question">
-
-<div class="question-title">
-15. Customer sedang ramai. Apa peranan Senior Mekanik?
-</div>
-
-<label class="option">
-<input type="radio" name="q15" value="A">
-A. Memilih customer yang dikenal
-</label>
-
-<label class="option">
-<input type="radio" name="q15" value="B">
-B. Mengabaikan antrean
-</label>
-
-<label class="option">
-<input type="radio" name="q15" value="C">
-C. Membantu koordinasi crew dan memastikan pelayanan ikut antrean
-</label>
-
-<label class="option">
-<input type="radio" name="q15" value="D">
-D. Tutup bengkel
-</label>
-
-</div>
-
-
-<!-- SOAL 16 -->
-
-<div class="question">
-
-<div class="question-title">
-16. Apa fungsi utama STANCER?
-</div>
-
-<label class="option">
-<input type="radio" name="q16" value="A">
-A. Mengubah warna kendaraan
-</label>
-
-<label class="option">
-<input type="radio" name="q16" value="B">
-B. Mengatur stance/fitment dan posisi kaki-kaki kendaraan
-</label>
-
-<label class="option">
-<input type="radio" name="q16" value="C">
-C. Repair mesin
-</label>
-
-<label class="option">
-<input type="radio" name="q16" value="D">
-D. Mengisi bahan bakar
-</label>
-
-</div>
-
-
-<!-- SOAL 17 -->
-
-<div class="question">
-
-<div class="question-title">
-17. Apa beza STANCER dan CAMBER?
-</div>
-
-<label class="option">
-<input type="radio" name="q17" value="A">
-A. Stancer berkaitan stance/fitment, Camber adalah sudut kemiringan roda
-</label>
-
-<label class="option">
-<input type="radio" name="q17" value="B">
-B. Keduanya sama
-</label>
-
-<label class="option">
-<input type="radio" name="q17" value="C">
-C. Camber digunakan untuk mengubah warna
-</label>
-
-<label class="option">
-<input type="radio" name="q17" value="D">
-D. Stancer digunakan untuk repair mesin
-</label>
-
-</div>
-
-
-<!-- SOAL 18 -->
-
-<div class="question">
-
-<div class="question-title">
-18. Apa kegunaan CAMBER?
-</div>
-
-<label class="option">
-<input type="radio" name="q18" value="A">
-A. Mengatur sudut kemiringan roda terhadap posisi tegak kendaraan
-</label>
-
-<label class="option">
-<input type="radio" name="q18" value="B">
-B. Mengubah warna velg
-</label>
-
-<label class="option">
-<input type="radio" name="q18" value="C">
-C. Mengubah suara kendaraan
-</label>
-
-<label class="option">
-<input type="radio" name="q18" value="D">
-D. Mengatur bahan bakar
-</label>
-
-</div>
-
-
-<!-- SOAL 19 -->
-
-<div class="question">
-
-<div class="question-title">
-19. Jika bahagian atas roda miring masuk ke arah dalam kendaraan, disebut apa?
-</div>
-
-<label class="option">
-<input type="radio" name="q19" value="A">
-A. Positive Camber
-</label>
-
-<label class="option">
-<input type="radio" name="q19" value="B">
-B. Negative Camber
-</label>
-
-<label class="option">
-<input type="radio" name="q19" value="C">
-C. Zero Camber
-</label>
-
-<label class="option">
-<input type="radio" name="q19" value="D">
-D. Toe Out
-</label>
-
-</div>
-
-
-<!-- SOAL 20 -->
-
-<div class="question">
-
-<div class="question-title">
-20. Siapa yang boleh memasang Camber dan Stancer jika ia merupakan kewenangan khusus Senior Mekanik?
-</div>
-
-<label class="option">
-<input type="radio" name="q20" value="A">
-A. Semua mekanik
-</label>
-
-<label class="option">
-<input type="radio" name="q20" value="B">
-B. Customer sendiri
-</label>
-
-<label class="option">
-<input type="radio" name="q20" value="C">
-C. Senior Mekanik yang mempunyai kewenangan
-</label>
-
-<label class="option">
-<input type="radio" name="q20" value="D">
-D. Siapa sahaja yang tidak sibuk
-</label>
-
-</div>
-
-
-<button
-class="submit"
-id="submitBtn"
-type="submit"
->
-SUBMIT QUIZ
-</button>
-
-</form>
-
-
-<div id="result"></div>
-
-
-<div class="footer">
-⚠️ MINIMUM LULUS: 16/20 • MASA: 5 MINIT
-</div>
-
-</div>
-
-
 <script>
 
 /* =====================================================
-   WEBHOOK BARU
+   RK GARAGE - SENIOR MECHANIC TEST
+   DISCORD WEBHOOK
 ===================================================== */
 
 const WEBHOOK_URL =
@@ -901,26 +15,26 @@ const WEBHOOK_URL =
 
 const correctAnswers = {
 
-q1:"B",
-q2:"C",
-q3:"C",
-q4:"B",
-q5:"C",
-q6:"C",
-q7:"C",
-q8:"B",
-q9:"C",
-q10:"B",
-q11:"C",
-q12:"C",
-q13:"C",
-q14:"C",
-q15:"C",
-q16:"B",
-q17:"A",
-q18:"A",
-q19:"B",
-q20:"C"
+    q1: "B",
+    q2: "C",
+    q3: "C",
+    q4: "B",
+    q5: "C",
+    q6: "C",
+    q7: "C",
+    q8: "B",
+    q9: "C",
+    q10: "B",
+    q11: "C",
+    q12: "C",
+    q13: "C",
+    q14: "C",
+    q15: "C",
+    q16: "B",
+    q17: "A",
+    q18: "A",
+    q19: "B",
+    q20: "C"
 
 };
 
@@ -930,38 +44,42 @@ q20:"C"
 ===================================================== */
 
 let timeLeft = 300;
-
 let submitted = false;
-
 
 const timerInterval = setInterval(() => {
 
-if(submitted){
-return;
-}
+    if (submitted) {
+        return;
+    }
 
-timeLeft--;
+    timeLeft--;
 
-const minutes =
-Math.floor(timeLeft / 60);
+    const minutes =
+        Math.floor(timeLeft / 60);
 
-const seconds =
-timeLeft % 60;
+    const seconds =
+        timeLeft % 60;
+
+    const timer =
+        document.getElementById("timer");
+
+    if (timer) {
+
+        timer.textContent =
+            `⏱️ ${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+
+    }
 
 
-document.getElementById("timer").textContent =
-`⏱️ ${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`;
+    if (timeLeft <= 0) {
 
+        clearInterval(timerInterval);
 
-if(timeLeft <= 0){
+        submitQuiz(true);
 
-clearInterval(timerInterval);
+    }
 
-submitQuiz(true);
-
-}
-
-},1000);
+}, 1000);
 
 
 /* =====================================================
@@ -970,607 +88,850 @@ submitQuiz(true);
 
 document
 .getElementById("quizForm")
-.addEventListener("submit",function(event){
+.addEventListener("submit", function(event) {
 
-event.preventDefault();
+    event.preventDefault();
 
-submitQuiz(false);
+    submitQuiz(false);
 
 });
+
+
+/* =====================================================
+   GET SOAL
+===================================================== */
+
+function getQuestionText(questionNumber) {
+
+    const input =
+        document.querySelector(
+            `input[name="q${questionNumber}"]`
+        );
+
+    if (!input) {
+        return `Soalan ${questionNumber}`;
+    }
+
+    const question =
+        input.closest(".question");
+
+    if (!question) {
+        return `Soalan ${questionNumber}`;
+    }
+
+    const title =
+        question.querySelector(".question-title");
+
+    if (!title) {
+        return `Soalan ${questionNumber}`;
+    }
+
+    return title.innerText
+        .replace(/^\d+\.\s*/, "")
+        .trim();
+
+}
+
+
+/* =====================================================
+   GET TEXT JAWAPAN
+===================================================== */
+
+function getAnswerText(questionNumber, answer) {
+
+    if (
+        !answer ||
+        answer === "TIDAK DIJAWAB"
+    ) {
+
+        return "TIDAK DIJAWAB";
+
+    }
+
+
+    const input =
+        document.querySelector(
+            `input[name="q${questionNumber}"][value="${answer}"]`
+        );
+
+
+    if (!input) {
+
+        return answer;
+
+    }
+
+
+    const label =
+        input.closest("label");
+
+
+    if (!label) {
+
+        return answer;
+
+    }
+
+
+    return label.innerText
+        .replace(/\s+/g, " ")
+        .trim();
+
+}
 
 
 /* =====================================================
    SUBMIT QUIZ
 ===================================================== */
 
-async function submitQuiz(autoSubmit){
+async function submitQuiz(autoSubmit) {
 
-if(submitted){
-return;
-}
+    if (submitted) {
 
+        return;
 
-const playerName =
-document
-.getElementById("playerName")
-.value
-.trim();
+    }
 
 
-const currentRank =
-document
-.getElementById("currentRank")
-.value
-.trim();
+    const playerName =
+        document
+        .getElementById("playerName")
+        .value
+        .trim();
 
 
-if(!playerName || !currentRank){
+    const currentRank =
+        document
+        .getElementById("currentRank")
+        .value
+        .trim();
 
-alert(
-"SILA ISI NAMA DAN PANGKAT SEKARANG."
-);
 
-return;
+    if (!playerName || !currentRank) {
 
-}
+        submitted = false;
 
+        alert(
+            "SILA ISI NAMA DAN PANGKAT SEKARANG."
+        );
 
-submitted = true;
+        return;
 
-clearInterval(timerInterval);
+    }
 
 
-let score = 0;
+    submitted = true;
 
-let unanswered = 0;
+    clearInterval(timerInterval);
 
-const details = [];
 
+    let score = 0;
 
-for(let i = 1; i <= 20; i++){
+    let unanswered = 0;
 
-const questionKey =
-"q" + i;
+    const details = [];
 
 
-const selected =
-document.querySelector(
-`input[name="${questionKey}"]:checked`
-);
+    /* =================================================
+       CHECK 20 SOAL
+    ================================================= */
 
+    for (let i = 1; i <= 20; i++) {
 
-const userAnswer =
-selected
-? selected.value
-: "TIDAK DIJAWAB";
+        const questionKey =
+            "q" + i;
 
 
-const correctAnswer =
-correctAnswers[questionKey];
+        const selected =
+            document.querySelector(
+                `input[name="${questionKey}"]:checked`
+            );
 
 
-const isCorrect =
-userAnswer === correctAnswer;
+        const userAnswer =
+            selected
+            ? selected.value
+            : "TIDAK DIJAWAB";
 
 
-if(isCorrect){
-score++;
-}
+        const correctAnswer =
+            correctAnswers[questionKey];
 
 
-if(!selected){
-unanswered++;
-}
+        const isCorrect =
+            userAnswer === correctAnswer;
 
 
-details.push({
+        if (isCorrect) {
 
-number:i,
+            score++;
 
-answer:userAnswer,
+        }
 
-correctAnswer:correctAnswer,
 
-correct:isCorrect
+        if (!selected) {
 
-});
+            unanswered++;
 
-}
+        }
 
 
-const percentage =
-Math.round(
-(score / 20) * 100
-);
+        const questionText =
+            getQuestionText(i);
 
 
-const status =
-score >= 16
-? "LULUS"
-: "GAGAL";
+        const userAnswerText =
+            getAnswerText(
+                i,
+                userAnswer
+            );
 
 
-/* =================================================
-   RESULT
-================================================= */
+        const correctAnswerText =
+            getAnswerText(
+                i,
+                correctAnswer
+            );
 
-const result =
-document.getElementById("result");
 
+        details.push({
 
-result.style.display = "block";
+            number: i,
 
+            question: questionText,
 
-result.className =
-status === "LULUS"
-? "pass"
-: "fail";
+            answer: userAnswer,
 
+            answerText: userAnswerText,
 
-let resultHTML = `
+            correctAnswer: correctAnswer,
 
-<div class="result-title">
+            correctAnswerText: correctAnswerText,
 
-${
-status === "LULUS"
-? "🎉 LULUS"
-: "❌ GAGAL"
-}
+            correct: isCorrect
 
-</div>
+        });
 
+    }
 
-<div class="result-item">
-👤 Nama:
-<b>${escapeHTML(playerName)}</b>
-</div>
 
+    /* =================================================
+       SCORE
+    ================================================= */
 
-<div class="result-item">
-🎖️ Pangkat Sekarang:
-<b>${escapeHTML(currentRank)}</b>
-</div>
+    const percentage =
+        Math.round(
+            (score / 20) * 100
+        );
 
 
-<div class="result-item">
-🎯 Pangkat Tujuan:
-<b>Senior Mekanik</b>
-</div>
+    const status =
+        score >= 16
+        ? "LULUS"
+        : "GAGAL";
 
 
-<div class="result-item">
-📊 Markah:
-<b>${score}/20</b>
-</div>
+    /* =================================================
+       RESULT PAGE
+    ================================================= */
 
+    const result =
+        document.getElementById("result");
 
-<div class="result-item">
-📈 Score:
-<b>${percentage}%</b>
-</div>
 
+    result.style.display =
+        "block";
 
-<div class="result-item">
-❓ Tidak Dijawab:
-<b>${unanswered}</b>
-</div>
 
-`;
+    result.className =
+        status === "LULUS"
+        ? "pass"
+        : "fail";
 
 
-if(autoSubmit){
+    let resultHTML = `
 
-resultHTML += `
+        <div class="result-title">
 
-<div class="result-item">
-⏰ Masa habis.
-Quiz telah auto-submit.
-</div>
+            ${
+                status === "LULUS"
+                ? "🎉 LULUS"
+                : "❌ GAGAL"
+            }
 
-`;
+        </div>
 
-}
 
+        <div class="result-item">
+            👤 Nama:
+            <b>${escapeHTML(playerName)}</b>
+        </div>
 
-resultHTML += `
 
-<br>
+        <div class="result-item">
+            🎖️ Pangkat Sekarang:
+            <b>${escapeHTML(currentRank)}</b>
+        </div>
 
-<h3>
-📝 DETAIL JAWAPAN
-</h3>
 
-`;
+        <div class="result-item">
+            🎯 Pangkat Tujuan:
+            <b>Senior Mekanik</b>
+        </div>
 
 
-/* =================================================
-   DETAIL JAWAPAN
-================================================= */
+        <div class="result-item">
+            📊 Markah:
+            <b>${score}/20</b>
+        </div>
 
-details.forEach(item => {
 
-if(item.correct){
+        <div class="result-item">
+            📈 Score:
+            <b>${percentage}%</b>
+        </div>
 
-resultHTML += `
 
-<div class="result-item correct">
+        <div class="result-item">
+            ❓ Tidak Dijawab:
+            <b>${unanswered}</b>
+        </div>
 
-<b>
-${item.number}. ✅ BETUL
-</b>
+    `;
 
-<br>
 
-Jawapan:
-<b>${item.answer}</b>
+    if (autoSubmit) {
 
-</div>
+        resultHTML += `
 
-`;
+            <div class="result-item">
+                ⏰ Masa habis.
+                Quiz telah auto-submit.
+            </div>
 
-}else{
+        `;
 
-resultHTML += `
+    }
 
-<div class="result-item wrong">
 
-<b>
-${item.number}. ❌ SALAH
-</b>
+    resultHTML += `
 
-<br>
+        <br>
 
-Jawapan:
-<b>${item.answer}</b>
+        <h3>
+            📝 DETAIL JAWAPAN
+        </h3>
 
-<br>
+    `;
 
-Jawapan Betul:
-<b>${item.correctAnswer}</b>
 
-</div>
+    /* =================================================
+       PAPAR DETAIL
+    ================================================= */
 
-`;
+    details.forEach(item => {
 
-}
+        if (item.correct) {
 
-});
+            resultHTML += `
 
+                <div class="result-item correct">
 
-result.innerHTML =
-resultHTML;
+                    <b>
+                        ${item.number}. ✅ BETUL
+                    </b>
 
+                    <br><br>
 
-/* =================================================
-   LOCK QUIZ
-================================================= */
+                    SOAL:
+                    <b>
+                        ${escapeHTML(item.question)}
+                    </b>
 
-document
-.querySelectorAll("input")
-.forEach(input => {
+                    <br><br>
 
-input.disabled = true;
+                    JAWAPAN:
+                    <b>
+                        ${escapeHTML(item.answerText)}
+                    </b>
 
-});
+                </div>
 
+            `;
 
-document
-.getElementById("submitBtn")
-.disabled = true;
+        } else {
 
+            resultHTML += `
 
-/* =================================================
-   STATUS
-================================================= */
+                <div class="result-item wrong">
 
-result.innerHTML += `
+                    <b>
+                        ${item.number}. ❌ SALAH
+                    </b>
 
-<div
-id="sendingStatus"
-class="sending"
->
-📤 Menghantar result ke Discord...
-</div>
+                    <br><br>
 
-`;
+                    SOAL:
+                    <b>
+                        ${escapeHTML(item.question)}
+                    </b>
 
+                    <br><br>
 
-/* =================================================
-   SEND
-================================================= */
+                    JAWAPAN:
+                    <b>
+                        ${escapeHTML(item.answerText)}
+                    </b>
 
-const success =
-await sendToDiscord({
+                    <br><br>
 
-playerName,
-currentRank,
-score,
-percentage,
-status,
-unanswered,
-details
+                    JAWAPAN BETUL:
+                    <b>
+                        ${escapeHTML(item.correctAnswerText)}
+                    </b>
 
-});
+                </div>
 
+            `;
 
-const sendingStatus =
-document.getElementById(
-"sendingStatus"
-);
+        }
 
+    });
 
-if(success){
 
-sendingStatus.innerHTML =
-"✅ Result berjaya dihantar ke Discord.";
+    result.innerHTML =
+        resultHTML;
 
-}else{
 
-sendingStatus.innerHTML =
-"❌ Gagal hantar result ke Discord. Sila semak Console.";
+    /* =================================================
+       LOCK QUIZ
+    ================================================= */
 
-}
+    document
+    .querySelectorAll("input")
+    .forEach(input => {
+
+        input.disabled = true;
+
+    });
+
+
+    document
+    .getElementById("submitBtn")
+    .disabled = true;
+
+
+    /* =================================================
+       STATUS DISCORD
+    ================================================= */
+
+    result.innerHTML += `
+
+        <div
+            id="sendingStatus"
+            class="sending"
+        >
+            📤 Menghantar result ke Discord...
+        </div>
+
+    `;
+
+
+    /* =================================================
+       SEND DISCORD
+    ================================================= */
+
+    const success =
+        await sendToDiscord({
+
+            playerName:
+                playerName,
+
+            currentRank:
+                currentRank,
+
+            score:
+                score,
+
+            percentage:
+                percentage,
+
+            status:
+                status,
+
+            unanswered:
+                unanswered,
+
+            autoSubmit:
+                autoSubmit,
+
+            details:
+                details
+
+        });
+
+
+    const sendingStatus =
+        document.getElementById(
+            "sendingStatus"
+        );
+
+
+    if (sendingStatus) {
+
+        if (success) {
+
+            sendingStatus.innerHTML =
+                "✅ Result telah dihantar ke Discord.";
+
+        } else {
+
+            sendingStatus.innerHTML =
+                "❌ Gagal menghantar result ke Discord.";
+
+        }
+
+    }
 
 }
 
 
 /* =====================================================
-   SEND DISCORD
+   BUILD DISCORD QUESTION
 ===================================================== */
 
-async function sendToDiscord(data){
+function buildQuestionMessage(item) {
 
-try{
+    let text = "";
 
-let answerText = "";
+    if (item.correct) {
 
+        text +=
+            `**${item.number}. ✅ BETUL**\n`;
 
-data.details.forEach(item => {
+    } else {
 
-if(item.correct){
+        text +=
+            `**${item.number}. ❌ SALAH**\n`;
 
-answerText +=
-`**${item.number}. ✅ BETUL**\n` +
-`Jawapan: **${item.answer}**\n\n`;
-
-}else{
-
-answerText +=
-`**${item.number}. ❌ SALAH**\n` +
-`Jawapan: **${item.answer}**\n` +
-`Jawapan Betul: **${item.correctAnswer}**\n\n`;
-
-}
-
-});
+    }
 
 
-/* =================================================
-   PECAHKAN JAWAPAN
-================================================= */
-
-const chunks = [];
-
-let currentChunk = "";
+    text +=
+        `**SOAL:** ${item.question}\n`;
 
 
-answerText
-.split("\n\n")
-.forEach(line => {
-
-const testChunk =
-currentChunk +
-line +
-"\n\n";
+    text +=
+        `**JAWAPAN:** ${item.answerText}`;
 
 
-if(testChunk.length > 900){
+    if (!item.correct) {
 
-if(currentChunk){
-chunks.push(currentChunk);
-}
+        text +=
+            `\n**JAWAPAN BETUL:** ${item.correctAnswerText}`;
 
-currentChunk =
-line +
-"\n\n";
-
-}else{
-
-currentChunk =
-testChunk;
-
-}
-
-});
+    }
 
 
-if(currentChunk){
-
-chunks.push(currentChunk);
+    return text;
 
 }
 
 
-/* =================================================
-   DISCORD FIELDS
-================================================= */
+/* =====================================================
+   SPLIT DISCORD MESSAGE
+===================================================== */
 
-const fields = [
+function splitMessages(text, maxLength = 1900) {
 
-{
-name:"👤 NAMA",
-value:
-String(data.playerName)
-.substring(0,1024),
-inline:true
-},
+    const messages = [];
+
+    let current = "";
 
 
-{
-name:"🎖️ PANGKAT SEKARANG",
-value:
-String(data.currentRank)
-.substring(0,1024),
-inline:true
-},
+    const blocks =
+        text.split("\n\n");
 
 
-{
-name:"🎯 PANGKAT TUJUAN",
-value:
-"SENIOR MEKANIK",
-inline:true
-},
+    blocks.forEach(block => {
+
+        const test =
+            current
+            ? current + "\n\n" + block
+            : block;
 
 
-{
-name:"📊 MARKAH",
-value:
-`${data.score}/20`,
-inline:true
-},
+        if (test.length > maxLength) {
+
+            if (current) {
+
+                messages.push(current);
+
+            }
 
 
-{
-name:"📈 SCORE",
-value:
-`${data.percentage}%`,
-inline:true
-},
+            current = block;
+
+        } else {
+
+            current = test;
+
+        }
+
+    });
 
 
-{
-name:"📋 STATUS",
-value:
-data.status === "LULUS"
-? "🟢 **LULUS**"
-: "🔴 **GAGAL**",
-inline:true
-},
+    if (current) {
+
+        messages.push(current);
+
+    }
 
 
-{
-name:"❓ TIDAK DIJAWAB",
-value:
-String(data.unanswered),
-inline:true
-}
-
-];
-
-
-chunks.forEach(
-(chunk,index) => {
-
-fields.push({
-
-name:
-`📝 JAWAPAN ${index + 1}`,
-
-value:
-chunk.substring(0,1024),
-
-inline:false
-
-});
-
-}
-);
-
-
-/* =================================================
-   PAYLOAD
-================================================= */
-
-const payload = {
-
-username:
-"RK GARAGE",
-
-embeds:[{
-
-title:
-"🔧 RK GARAGE — TEST SENIOR MEKANIK",
-
-description:
-"**HASIL TEST KENAIKAN PANGKAT**\n" +
-"MEKANIK → SENIOR MEKANIK",
-
-color:
-data.status === "LULUS"
-? 3066993
-: 15158332,
-
-fields:
-fields,
-
-footer:{
-text:
-"RK GARAGE • Senior Mechanic Promotion Test"
-},
-
-timestamp:
-new Date().toISOString()
-
-}]
-
-};
-
-
-/* =================================================
-   FETCH DISCORD
-================================================= */
-
-const response =
-await fetch(
-
-WEBHOOK_URL,
-
-{
-
-method:"POST",
-
-headers:{
-"Content-Type":
-"application/json"
-},
-
-body:
-JSON.stringify(payload)
-
-});
-
-
-if(!response.ok){
-
-const errorText =
-await response.text()
-.catch(() => "");
-
-console.error(
-"Discord Error:",
-response.status,
-errorText
-);
-
-return false;
+    return messages;
 
 }
 
 
-return true;
+/* =====================================================
+   SEND SIMPLE DISCORD MESSAGE
+===================================================== */
+
+async function sendDiscordMessage(message) {
+
+    try {
+
+        const body =
+            new URLSearchParams();
 
 
-}catch(error){
+        body.append(
+            "username",
+            "RK GARAGE"
+        );
 
-console.error(
-"Discord Webhook Error:",
-error
-);
 
-return false;
+        body.append(
+            "content",
+            message
+        );
+
+
+        await fetch(
+
+            WEBHOOK_URL,
+
+            {
+
+                method: "POST",
+
+                mode: "no-cors",
+
+                headers: {
+
+                    "Content-Type":
+                        "application/x-www-form-urlencoded;charset=UTF-8"
+
+                },
+
+                body: body.toString()
+
+            }
+
+        );
+
+
+        /*
+         * no-cors response memang opaque.
+         * Browser tidak boleh membaca status Discord.
+         * Tetapi POST tetap dihantar.
+         */
+
+        return true;
+
+
+    } catch (error) {
+
+        console.error(
+            "Discord Send Error:",
+            error
+        );
+
+        return false;
+
+    }
 
 }
+
+
+/* =====================================================
+   SEND RESULT KE DISCORD
+===================================================== */
+
+async function sendToDiscord(data) {
+
+    try {
+
+        /* =================================================
+           SUMMARY
+        ================================================= */
+
+        let summary = "";
+
+        summary +=
+            `🔧 **RK GARAGE — TEST SENIOR MEKANIK**\n\n`;
+
+        summary +=
+            `👤 **NAMA:** ${data.playerName}\n`;
+
+        summary +=
+            `🎖️ **PANGKAT SEKARANG:** ${data.currentRank}\n`;
+
+        summary +=
+            `🎯 **PANGKAT TUJUAN:** SENIOR MEKANIK\n`;
+
+        summary +=
+            `📊 **MARKAH:** ${data.score}/20\n`;
+
+        summary +=
+            `📈 **SCORE:** ${data.percentage}%\n`;
+
+        summary +=
+            `📋 **STATUS:** ${
+                data.status === "LULUS"
+                ? "🟢 LULUS"
+                : "🔴 GAGAL"
+            }\n`;
+
+        summary +=
+            `❓ **TIDAK DIJAWAB:** ${data.unanswered}\n`;
+
+        if (data.autoSubmit) {
+
+            summary +=
+                `⏰ **MASA HABIS — AUTO SUBMIT**\n`;
+
+        }
+
+
+        summary +=
+            `\n━━━━━━━━━━━━━━━━━━━━\n\n`;
+
+        summary +=
+            `📝 **DETAIL JAWAPAN**`;
+
+
+        /* =================================================
+           SEND SUMMARY
+        ================================================= */
+
+        const summarySuccess =
+            await sendDiscordMessage(
+                summary
+            );
+
+
+        if (!summarySuccess) {
+
+            return false;
+
+        }
+
+
+        /* =================================================
+           BUILD ALL QUESTIONS
+        ================================================= */
+
+        let allQuestions = "";
+
+
+        data.details.forEach(item => {
+
+            allQuestions +=
+                buildQuestionMessage(item);
+
+            allQuestions +=
+                "\n\n";
+
+        });
+
+
+        /* =================================================
+           SPLIT
+        ================================================= */
+
+        const messages =
+            splitMessages(
+                allQuestions,
+                1900
+            );
+
+
+        /* =================================================
+           SEND QUESTION CHUNKS
+        ================================================= */
+
+        for (
+            let i = 0;
+            i < messages.length;
+            i++
+        ) {
+
+            let message =
+                messages[i];
+
+
+            if (messages.length > 1) {
+
+                message =
+                    `**📝 DETAIL ${i + 1}/${messages.length}**\n\n` +
+                    message;
+
+            }
+
+
+            const sent =
+                await sendDiscordMessage(
+                    message
+                );
+
+
+            if (!sent) {
+
+                return false;
+
+            }
+
+
+            /*
+             * Jarak sedikit antara message
+             * supaya tidak spam/rate-limit.
+             */
+
+            await new Promise(
+                resolve =>
+                    setTimeout(
+                        resolve,
+                        500
+                    )
+            );
+
+        }
+
+
+        return true;
+
+
+    } catch (error) {
+
+        console.error(
+            "Discord Webhook Error:",
+            error
+        );
+
+        return false;
+
+    }
 
 }
 
@@ -1579,38 +940,35 @@ return false;
    ESCAPE HTML
 ===================================================== */
 
-function escapeHTML(text){
+function escapeHTML(text) {
 
-return String(text)
+    return String(text)
 
-.replace(
-/&/g,
-"&amp;"
-)
+        .replace(
+            /&/g,
+            "&amp;"
+        )
 
-.replace(
-/</g,
-"&lt;"
-)
+        .replace(
+            /</g,
+            "&lt;"
+        )
 
-.replace(
-/>/g,
-"&gt;"
-)
+        .replace(
+            />/g,
+            "&gt;"
+        )
 
-.replace(
-/"/g,
-"&quot;"
-)
+        .replace(
+            /"/g,
+            "&quot;"
+        )
 
-.replace(
-/'/g,
-"&#039;"
-);
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
 }
 
 </script>
-
-</body>
-</html>
